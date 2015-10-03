@@ -1,7 +1,33 @@
+<script type="text/ng-template" id="field_renderer.html">
+    <ul>
+        <li ng-repeat="field in data" ng-include="'field_renderer.html'">butts</li>
+    </ul>
+</script>
+
 <div class="row">
   <h1 class="page-header">
     Here's where I would explain the project...
     <small>For the lazy and impatient.</small>
   </h1>
 </div>
+<div>
+  <ul>
+    <li>{{ tree }}</li>
+  </ul>
+</div>
 
+
+
+
+<!-- ------------------------------------------------------------------------------------------------------------------------------
+
+<script type="text/ng-template" id="field_renderer.html">
+    {{data.label}}
+    <ul>
+        <li ng-repeat="field in data.fields" ng-include="'field_renderer.html'"></li>
+    </ul>
+</script>
+
+<ul ng-controller="NestedFormCtrl">
+    <li ng-repeat="field in formData" ng-include="'field_renderer.html'"></li>
+</ul> -->

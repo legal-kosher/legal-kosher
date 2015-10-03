@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var cors = require('cors')
 var http = require('http');
+var fs = require('fs')
 var port = 8008;
 
 var app = express();
@@ -21,7 +22,13 @@ var server = http.createServer(app);
 
 
 app.get('/', function(req, res){
-  res.sendFile(path.join(__dirname + '../build/index.html'));
+  res.sendFile(path.join(__dirname + '/../build/index.html'));
+});
+
+app.get('/mySweetData', function(req, res){
+  fs.readFile(__dirname + '/../build/assets/data.json', 'utf8', function (err, data) {
+    res.send({data: data});
+  });
 });
 
 var server = http.createServer(app);
