@@ -1,4 +1,3 @@
-var getData = require('../moduleinfo');
 var mongoose = require('mongoose');
 var models = require('../models');
 var Data = mongoose.model('Data');
@@ -8,9 +7,6 @@ module.exports = function(app) {
   app.get('/', function(req, res) {
     res.sendFile(path.join(__dirname + '/../build/index.html'));
   });
-
-  // internal only
-  getData(app);
 
   //receive data from client
   app.post('/post', function(req, res, next) {
