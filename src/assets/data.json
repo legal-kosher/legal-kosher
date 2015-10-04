@@ -1,0 +1,137 @@
+{
+  "modnameMyMom" : {
+    "name": "yo mom",
+    "version": 2,
+    "license": "MIT",
+    "pass": true,
+    "path": "path/to/the/dependency",
+    "dependencies": {
+      "modnameSteve" : {
+        "name": "Methamphetamines",
+        "version": 2,
+        "license": "MIT",
+        "pass": true,
+        "path": "path/to/the/dependency",
+        "dependencies": {}
+      },
+      "modnameBob" : {
+        "name": "God.",
+        "version": 2,
+        "license": "MIT",
+        "pass": true,
+        "path": "path/to/the/dependency",
+        "dependencies": {
+          "modnameJimBean" : {
+            "name": "Jenny",
+            "version": 2,
+            "license": "MIT",
+            "pass": true,
+            "path": "path/to/the/dependency",
+            "dependencies": {}
+          }
+        }
+      },
+      "modnameSally" : {
+        "name": "Krissy",
+        "version": 2,
+        "license": "MIT",
+        "pass": true,
+        "path": "path/to/the/dependency",
+        "dependencies": {}
+      }
+    }
+  },
+  "modnameSallyBob" : {
+    "name": "Jammie",
+    "version": 2,
+    "license": "MIT",
+    "pass": false,
+    "path": "path/to/the/dependency",
+    "dependencies": {
+      "modnameYourMom" : {
+        "name": "SpongeBob",
+        "version": 2,
+        "license": "MIT",
+        "pass": true,
+        "path": "path/to/the/dependency",
+        "dependencies": {}
+      },
+      "modnameHaiti" : {
+        "name": "goats.com",
+        "version": 2,
+        "license": "BAD",
+        "pass": false,
+        "path": "path/to/the/dependency",
+        "dependencies": {
+          "modnameCuba" : {
+            "name": "i like beer",
+            "version": 2,
+            "license": "BAD",
+            "pass": false,
+            "path": "path/to/the/dependency",
+            "dependencies": {}
+          },
+          "modnameAlabama" : {
+            "name": "your cat",
+            "version": 2,
+            "license": "TIM",
+            "pass": true,
+            "path": "path/to/the/dependency",
+            "dependencies": {}
+          }
+        }
+      },
+      "modnameChile" : {
+        "name": "Donald TrumpsyTrump",
+        "version": 2,
+        "license": "MIT",
+        "pass": true,
+        "path": "path/to/the/dependency",
+        "dependencies": {}
+      }
+    }
+  },
+  "modnameBolivia" : {
+    "name": "Flowers",
+    "version": 2,
+    "license": "MIT",
+    "pass": true,
+    "path": "path/to/the/dependency",
+    "dependencies": {
+      "modnameUkraine" : {
+        "name": "Blah",
+        "version": 2,
+        "license": "MIT",
+        "pass": true,
+        "path": "path/to/the/dependency",
+        "dependencies": {}
+      },
+      "modnameUSSR" : {
+        "name": "Chips are Fun",
+        "version": 2,
+        "license": "MIT",
+        "pass": true,
+        "path": "path/to/the/dependency",
+        "dependencies": {
+          "modnameLyndon" : {
+            "name": "Who's a good boy?",
+            "version": 2,
+            "license": "MIT",
+            "pass": true,
+            "path": "path/to/the/dependency",
+            "dependencies": {}
+          }
+        }
+      },
+      "modnameLyndon" : {
+        "name": "Vodka in da Club",
+        "version": 2,
+        "license": "MIT",
+        "pass": true,
+        "path": "path/to/the/dependency",
+        "dependencies": {}
+      }
+    }
+  }
+
+}

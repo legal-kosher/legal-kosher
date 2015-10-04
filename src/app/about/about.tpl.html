@@ -1,7 +1,25 @@
+
 <div class="row">
   <h1 class="page-header">
     Here's where I would explain the project...
     <small>For the lazy and impatient.</small>
   </h1>
 </div>
+<div id="navcontainer">
+  <ul>
+    <li ng-repeat="(key, value) in newData" class="dependency" ng-class="value.pass ? 'pass' : 'fail'" ng-include="'tree_item_renderer.html'"></li>
+  </ul>
+</div>
+<div>
+<p>sajkghsakghalksg</p>
+<div showonhoverparent></div>
+<div>
 
+
+<script type="text/ng-template"  id="tree_item_renderer.html">
+    {{key}}
+    <ul>
+        <li class="dependency" ng-class="value.pass ? 'pass' : 'fail'" ng-repeat="(key, value) in value.dependencies" ng-include="'tree_item_renderer.html'"></li>
+        <div showonhoverparent></div>
+    </ul>
+</script>
