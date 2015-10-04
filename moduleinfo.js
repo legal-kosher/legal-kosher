@@ -6,11 +6,8 @@ var prc = spawn('npm', ['ls', '--json', '--long']);
 var data = '';
 var includes = ["name", "version", "licenses", "license", "dependencies"];
 var modules;
-// read config
-// var config = fs.readFile('./legal-config.json', 'utf-8', function(err, data) {
-//   if (err) console.log('Err readfile config.json:', err);
-//   else console.log((data));
-// })
+var stringify = require('json-stringify-safe');
+
 
 module.exports = function(app) {
 
@@ -23,6 +20,7 @@ module.exports = function(app) {
 
     prc.stdout.on('end', function(info) {
       var parsedObject = JSON.parse(data);
+      console.log(parsedObject);
 
       function reduceObject(obj) {
         _.each(obj, function(item, key, list) {
@@ -36,15 +34,15 @@ module.exports = function(app) {
       parseModule(parsedObject, req, res);
 
 
+      var test = stringify(parsedObject);
+      res.send({
+        data: test
+      });
 
     });
 
     prc.on('close', function(code) {
-      console.log('process exit code ' + code);
-      // console.log(modules);
-      // res.send({
-      //   data: modules
-      // });
+      // console.log('process exit code ' + code);
     });
   });
 }
