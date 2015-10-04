@@ -1,6 +1,5 @@
 angular.module('legal-kosher.about', [
   'ui.router',
-  //'placeholders',
   'ui.bootstrap'
 ])
 
