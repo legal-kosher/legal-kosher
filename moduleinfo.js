@@ -33,18 +33,18 @@ module.exports = function(app) {
         _.each(obj['dependencies'], reduceObject);
       }
       reduceObject(parsedObject);
-      modules = parseModule(parsedObject);
+      parseModule(parsedObject, req, res);
 
-      console.log(modules);
 
-      res.send({
-        data: modules
-      });
 
     });
 
     prc.on('close', function(code) {
       console.log('process exit code ' + code);
+      // console.log(modules);
+      // res.send({
+      //   data: modules
+      // });
     });
   });
 }
