@@ -3,6 +3,7 @@ angular.module( 'legal-kosher', [
   'templates-common',
   'legal-kosher.home',
   'legal-kosher.about',
+  'legal-kosher.settings',
   'ui.router'
 ])
 
