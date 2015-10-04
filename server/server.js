@@ -14,7 +14,9 @@ var app = express();
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({
+  extended: false
+}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '../build')));
 app.use(cors());
@@ -22,20 +24,20 @@ app.use(cors());
 var server = http.createServer(app);
 
 
-app.get('/', function(req, res){
+app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname + '/../build/index.html'));
 });
 
-app.get('/mySweetData', function(req, res){
-  var modules = getData.modules;
-  console.log(modules)
+getData(app);
+app.get('/mySweetData', function(req, res) {
+  // console.log(modules)
   // fs.readFile(__dirname + '/../build/assets/data.json', 'utf8', function (err, data) {
   //   res.send({data: data});
   // });
-  res.send({});
+  // res.send({});
 });
 
 var server = http.createServer(app);
 server.listen(port);
 
-console.log('Listening on:' + port );
+console.log('Listening on:' + port);
