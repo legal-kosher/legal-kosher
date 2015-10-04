@@ -39,20 +39,24 @@ var parseModule = function(data){
     }
   };
 
-  var markParentNode = function(parent){
+  // Mark parent node safety status
+  var markParentNode = function(parent, data){
     var currentParent = parent;
-    while (currentParent){
-      if (data.passes === false){
-        parent.value.passes = false;
-      } else if (data.passes === "warn" && parent.value && parent.value.passes !== false){
-        parent.value.passes = "warn";
+    if (data.passes !== true){
+      while (currentParent){
+        if (data.passes === false){
+          parent.passes = false;
+        } else if (data.passes === "warn" && parent.value && parent.passes !== false){
+          parent.passes = "warn";
+        }
+        currentParent = parent.parent;
       }
-      currentParent = parent.parent;
+    } else if (!parent.passes){
+      parent.passes = true;
     }
   };
 
   var makeNode = function(name, data, parent){
-    // console.log("name", name, "data", data, "parent", parent)
     // Modify data object
     data.name = name;
     var dependencies = data.dependencies;
@@ -60,28 +64,35 @@ var parseModule = function(data){
 
     // Create child node for each dependency that points to data object as parent
     Object.keys(dependencies).forEach(function(depName){
-      var newNode = makeNode(depName, dependencies[depName], data);
-      data.dependencies.push(newNode);
+      makeNode(depName, dependencies[depName], data);
     });
 
     // Determine data object safety
     markNodeSafety(data);
 
     if (parent){
-      // If data object unsafe, mark parent
-      markParentNode(parent);
+      markParentNode(parent, data);
       // Create data node from data object and push to parent dependencies
       var node = new Node(data, parent);
       parent.dependencies.push(node);
     }
-
   }
 
+  // Begin parsing data
   Object.keys(modules).forEach(function(modKey){
     makeNode(modKey, modules[modKey], null);
+    // console.log(util.inspect(modules, {depth: null}));
   });
 
-  console.log(util.inspect(modules, {depth: null}))
-}
+  // grunt-bump not being marked as passing or not
+  Object.keys(modules).forEach(function(key){
+    if (modules[key].passes === undefined){
+      // console.log(newList[key])
+      console.log(util.inspect(modules[key], {depth: null}));
+    }
+    // console.log(key, newList[key].passes)
+  });
+
+};
 
 module.exports = function(data){ parseModule(data); };
