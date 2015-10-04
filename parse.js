@@ -1,6 +1,6 @@
 var util = require('util');
 
-var parseModule = function(data){
+var parseModule = function(data, req, res){
 
   var modules = data.dependencies;
 
@@ -84,7 +84,22 @@ var parseModule = function(data){
     // console.log(util.inspect(modules, {depth: null}));
   });
 
-  return modules;
+  var cache = [];
+  modules = JSON.stringify(modules, function(key, value) {
+      // if (typeof value === 'object' && value !== null) {
+          if (cache.indexOf(value) !== -1) {
+              // Circular reference found, discard key
+              return;
+          }
+          // Store value in our collection
+          cache.push(value);
+      // }
+      return value;
+  });
+  cache = null; // Enable garbage collection
+  console.log(modules)
+  res.send(modules);
+
   // // grunt-bump not being marked as passing or not
   // Object.keys(modules).forEach(function(key){
   //   if (modules[key].passes === undefined){
@@ -95,4 +110,4 @@ var parseModule = function(data){
 
 };
 
-module.exports = function(data){ parseModule(data); };
+module.exports = function(data, req, res){ parseModule(data, req, res); };

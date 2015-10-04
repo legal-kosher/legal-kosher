@@ -29,13 +29,13 @@ app.get('/', function(req, res) {
 });
 
 getData(app);
-app.get('/mySweetData', function(req, res) {
-  // console.log(modules)
-  // fs.readFile(__dirname + '/../build/assets/data.json', 'utf8', function (err, data) {
-  //   res.send({data: data});
-  // });
-  // res.send({});
-});
+// app.get('/mySweetData', function(req, res) {
+//   // console.log(modules)
+//   // fs.readFile(__dirname + '/../build/assets/data.json', 'utf8', function (err, data) {
+//   //   res.send({data: data});
+//   // });
+//   // res.send({});
+// });
 
 var server = http.createServer(app);
 server.listen(port);

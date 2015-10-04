@@ -26,10 +26,12 @@ angular.module('legal-kosher.about', [
 
   $http({
     method: 'GET',
-    url: 'http://127.0.0.1:8008/mySweetData'
+    url: 'http://127.0.0.1:8008/data'
   }).then(function successCallback(res) {
-    var dataObj = JSON.parse(res.data.data)
-    $scope.newData = dataObj;
+    console.dir(res.data)
+    // var dataObj = JSON.parse(res.data.)
+    // console.log(res)
+    // $scope.newData = dataObj;
   }, function errorCallback(res) {
     console.log('U DUN FUGGED UP');
   });
