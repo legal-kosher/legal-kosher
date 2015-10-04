@@ -9,20 +9,10 @@ var parseModule = function(data, req, res){
     "GPL": false
   };
 
-  var Node = function(value, parent){
-    this.value = value;
-    this.parent = parent;
-  };
-
   // If data.licenses and a license fails the test, mark warning
   var markNodeSafety = function(data){
     if (!data.license && !data.licenses){
       data.license = "unknown"
-    }
-    if (data.value === undefined){
-      data.value = {
-        passes: undefined
-      };
     }
     if (data.licenses){
       var passes = true;
@@ -35,39 +25,27 @@ var parseModule = function(data, req, res){
           break;
         }
       }
-      data.value.passes = passes;
+      data.passes = passes;
     } else if (data.license){
       if (rules[data.license] === true){
-        data.value.passes = true;
+        data.passes = true;
       } else if (!rules[data.license] || rules[data.license] !== true){
-        data.value.passes = "warn";
+        data.passes = "warn";
       } else {
-        data.value.passes = false;
+        data.passes = false;
       }
     }
   };
 
   // Mark parent node safety status
   var markParentNode = function(parent, data){
-    var currentParent = parent;
-    if (!parent.value){
-      parent.value = {
-        passes: undefined
-      }
+    if (data.passes === false){
+      parent.passes = false;
+    } else if (data.passes === "warn" && parent.passes !== false){
+      parent.passes = "warn";
     }
-    if (data.value){
-      if (data.value.passes !== true){
-        while (currentParent){
-          if (data.value.passes === false){
-            parent.value.passes = false;
-          } else if (data.value.passes === "warn" && parent.value && parent.value.passes !== false){
-            parent.value.passes = "warn";
-          }
-          currentParent = parent.parent;
-        }
-      } else if (parent.value.passes === undefined){
-        parent.value.passes = true;
-      }
+    if (parent.parent){
+      markParentNode(parent.parent, data);
     }
   };
 
@@ -76,40 +54,45 @@ var parseModule = function(data, req, res){
     data.name = name;
     var dependencies = data.dependencies;
     data.dependencies = [];
+    data.parent = parent
 
+    // Determine data object safety
+    markNodeSafety(data);
+    console.log(dependencies)
     // Create child node for each dependency that points to data object as parent
     Object.keys(dependencies).forEach(function(depName){
       makeNode(depName, dependencies[depName], data);
     });
 
-    // Determine data object safety
-    markNodeSafety(data);
 
     if (parent){
-      markParentNode(parent, data);
-      // Create data node from data object and push to parent dependencies
-      var node = new Node(data, parent);
-      parent.dependencies.push(node);
+      console.log(parent)
+      if (data.passes !== true){
+        markParentNode(parent, data);
+      }
+      // // Create data node from data object and push to parent dependencies
+      // // var node = new Node(data, parent);
+      parent.dependencies.push(data);
     }
   }
 
   // Begin parsing data
   Object.keys(modules).forEach(function(modKey){
     makeNode(modKey, modules[modKey], null);
-    // console.log(util.inspect(modules, {depth: null}));
   });
 
+  console.log(util.inspect(modules, {depth: null}));
   var cache = [];
   modules = JSON.stringify(modules, function(key, value) {
-      if (typeof value === 'object' && value !== null) {
-          if (cache.indexOf(value) !== -1) {
-              // Circular reference found, discard key
-              return;
-          }
-          // Store value in our collection
-          cache.push(value);
+    if (typeof value === 'object' && value !== null) {
+      if (cache.indexOf(value) !== -1) {
+        // Circular reference found, discard key
+        return;
       }
-      return value;
+      // Store value in our collection
+      cache.push(value);
+    }
+    return value;
   });
   cache = null; // Enable garbage collection
   // console.log(modules)
