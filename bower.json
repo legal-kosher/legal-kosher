@@ -8,5 +8,8 @@
     "angular-bootstrap": "~0.10.0",
     "angular-ui-router": "~0.2"
   },
-  "dependencies": {}
+  "dependencies": {
+    "ngDraggable": "~0.1.8",
+    "angular-dragdrop": "~1.0.12"
+  }
 }
