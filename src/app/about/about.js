@@ -1,8 +1,9 @@
-angular.module( 'legal-kosher.about', [
+angular.module('legal-kosher.about', [
   'ui.router',
   'placeholders',
   'ui.bootstrap'
 ])
+
 
 .config(function config( $stateProvider ) {
   $stateProvider.state( 'about', {
@@ -22,6 +23,7 @@ angular.module( 'legal-kosher.about', [
   // This is simple a demo for UI Boostrap.
   
   $scope.newData;
+  $scope.showEl = false;
 
   $http({
     method: 'GET',
@@ -36,4 +38,37 @@ angular.module( 'legal-kosher.about', [
   
 }])
 
+.directive('showonhoverparent',
+    function() {
+      return {
+        restrict: 'EA',
+        controller: function($scope) {
+          $scope.showEl = {visible: false};
+
+        },
+        template: "<div class='span2' ng-show='showEl.visible'><span><a class='btn btn-danger' href='#'>MORE DATA GOES HERE</a></span></div>",
+        link : function($scope, element, attrs) {
+          element.parent().bind('mouseenter', function() {
+            $scope.showEl.visible = true;
+            $scope.$digest()
+            console.log($scope.showEl)
+          });
+          element.parent().bind('mouseleave', function() {
+            $scope.showEl.visible = false;
+            $scope.$digest()
+          });
+       }
+   };
+})
 ;
+
+// return {
+//         restrict: 'EA', //E = element, A = attribute, C = class, M = comment         
+//         scope: {
+//             //@ reads the attribute value, = provides two-way binding, & works with functions
+//             title: '@'         },
+//         template: '<div>{{ myVal }}</div>',
+//         templateUrl: 'mytemplate.html',
+//         controller: controllerFunction, //Embed a custom controller in the directive
+//         link: function ($scope, element, attrs) { } //DOM manipulation
+//     }
