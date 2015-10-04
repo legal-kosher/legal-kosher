@@ -1,5 +1,6 @@
 //setup Dependencies
 var express = require('express');
+var app = express();
 var path = require('path');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
@@ -7,10 +8,10 @@ var bodyParser = require('body-parser');
 var cors = require('cors')
 var http = require('http');
 var fs = require('fs');
-var getData = require('../moduleinfo');
+var mongoose = require('mongoose');
 var port = 8008;
+var router = require('../router');
 
-var app = express();
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
@@ -21,21 +22,15 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '../build')));
 app.use(cors());
 
-var server = http.createServer(app);
 
-
-app.get('/', function(req, res) {
-  res.sendFile(path.join(__dirname + '/../build/index.html'));
+// connect to DB and fire up server. 
+var config = 'mongodb://127.0.0.1:27017/legal-kosher' // this should be in a config file... 
+mongoose.connect(config, function(err) {
+  if (err) console.log(err)
+  var server = http.createServer(app);
 });
 
-getData(app);
-// app.get('/mySweetData', function(req, res) {
-//   // console.log(modules)
-//   // fs.readFile(__dirname + '/../build/assets/data.json', 'utf8', function (err, data) {
-//   //   res.send({data: data});
-//   // });
-//   // res.send({});
-// });
+router(app);
 
 var server = http.createServer(app);
 server.listen(port);

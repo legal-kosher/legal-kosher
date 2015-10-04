@@ -1,7 +1,6 @@
 var util = require('util');
 
-var parseModule = function(data, req, res){
-
+var parseModule = function(data) {
   var modules = data.dependencies;
 
   var rules = {
@@ -10,26 +9,26 @@ var parseModule = function(data, req, res){
   };
 
   // If data.licenses and a license fails the test, mark warning
-  var markNodeSafety = function(data){
-    if (!data.license && !data.licenses){
+  var markNodeSafety = function(data) {
+    if (!data.license && !data.licenses) {
       data.license = "unknown"
     }
-    if (data.licenses){
+    if (data.licenses) {
       var passes = true;
-      for (var i=0; i<data.licenses.length; i++){
-        if (rules[data.licenses[i].type] === false){
+      for (var i = 0; i < data.licenses.length; i++) {
+        if (rules[data.licenses[i].type] === false) {
           passes = false;
           break;
-        } else if (!rules[data.licenses[i].type] || rules[data.licenses[i].type] !== true){
+        } else if (!rules[data.licenses[i].type] || rules[data.licenses[i].type] !== true) {
           passes = "warn";
           break;
         }
       }
       data.passes = passes;
-    } else if (data.license){
-      if (rules[data.license] === true){
+    } else if (data.license) {
+      if (rules[data.license] === true) {
         data.passes = true;
-      } else if (!rules[data.license] || rules[data.license] !== true){
+      } else if (!rules[data.license] || rules[data.license] !== true) {
         data.passes = "warn";
       } else {
         data.passes = false;
@@ -38,18 +37,18 @@ var parseModule = function(data, req, res){
   };
 
   // Mark parent node safety status
-  var markParentNode = function(parent, data){
-    if (data.passes === false){
+  var markParentNode = function(parent, data) {
+    if (data.passes === false) {
       parent.passes = false;
-    } else if (data.passes === "warn" && parent.passes !== false){
+    } else if (data.passes === "warn" && parent.passes !== false) {
       parent.passes = "warn";
     }
-    if (parent.parent){
+    if (parent.parent) {
       markParentNode(parent.parent, data);
     }
   };
 
-  var makeNode = function(name, data, parent){
+  var makeNode = function(name, data, parent) {
     // Modify data object
     data.name = name;
     var dependencies = data.dependencies;
@@ -59,29 +58,28 @@ var parseModule = function(data, req, res){
     // Determine data object safety
     markNodeSafety(data);
     console.log(dependencies)
-    // Create child node for each dependency that points to data object as parent
-    Object.keys(dependencies).forEach(function(depName){
+      // Create child node for each dependency that points to data object as parent
+    Object.keys(dependencies).forEach(function(depName) {
       makeNode(depName, dependencies[depName], data);
     });
 
 
-    if (parent){
-      console.log(parent)
-      if (data.passes !== true){
-        markParentNode(parent, data);
-      }
-      // // Create data node from data object and push to parent dependencies
-      // // var node = new Node(data, parent);
-      parent.dependencies.push(data);
+    if (parent) {
+      markParentNode(parent, data);
+      // Create data node from data object and push to parent dependencies
+      var node = new Node(data, parent);
+      parent.dependencies.push(node);
     }
   }
 
   // Begin parsing data
-  Object.keys(modules).forEach(function(modKey){
+  Object.keys(modules).forEach(function(modKey) {
     makeNode(modKey, modules[modKey], null);
   });
 
-  console.log(util.inspect(modules, {depth: null}));
+  console.log(util.inspect(modules, {
+    depth: null
+  }));
   var cache = [];
   modules = JSON.stringify(modules, function(key, value) {
     if (typeof value === 'object' && value !== null) {
@@ -96,7 +94,7 @@ var parseModule = function(data, req, res){
   });
   cache = null; // Enable garbage collection
   // console.log(modules)
-  res.send(modules)
+  return modules;
   // setTimeout(function(){res.send(modules);},3000);
 
   // // grunt-bump not being marked as passing or not
@@ -109,4 +107,6 @@ var parseModule = function(data, req, res){
 
 };
 
-module.exports = function(data, req, res){ parseModule(data, req, res); };
+module.exports = function(data) {
+  parseModule(data);
+};
