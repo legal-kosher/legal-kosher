@@ -30,6 +30,11 @@ angular.module( 'legal-kosher.settings', [
   $scope.notApproved = $scope.settings.notApproved;
   $scope.waitingForApproval = $scope.settings.waitingForApproval;
 
+  $scope.addLicense = function() {
+    var newLicense = prompt('License name');
+    $scope.settings.waitingForApproval.push(newLicense)
+  }
+
 
 
 }])
