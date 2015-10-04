@@ -1,6 +1,7 @@
-<script type="text/ng-template" id="field_renderer.html">
+<script type="text/ng-template"  id="tree_item_renderer.html">
+    {{key}}
     <ul>
-        <li ng-repeat="field in data" ng-include="'field_renderer.html'">butts</li>
+        <li ng-repeat="(key, value) in value.dependencies" ng-include="'tree_item_renderer.html'"></li>
     </ul>
 </script>
 
@@ -12,7 +13,7 @@
 </div>
 <div>
   <ul>
-    <li>{{ tree }}</li>
+    <li ng-repeat="(key, value) in newData" ng-include="'tree_item_renderer.html'"></li>
   </ul>
 </div>
 
@@ -21,13 +22,13 @@
 
 <!-- ------------------------------------------------------------------------------------------------------------------------------
 
-<script type="text/ng-template" id="field_renderer.html">
-    {{data.label}}
+<script type="text/ng-template"  id="tree_item_renderer.html">
+    {{data.name}}
     <ul>
-        <li ng-repeat="field in data.fields" ng-include="'field_renderer.html'"></li>
+        <li ng-repeat="data in data.nodes" ng-include="'tree_item_renderer.html'"></li>
     </ul>
 </script>
 
-<ul ng-controller="NestedFormCtrl">
-    <li ng-repeat="field in formData" ng-include="'field_renderer.html'"></li>
-</ul> -->
+<ul ng-app="Application" ng-controller="TreeController">
+    <li ng-repeat="data in tree" ng-include="'tree_item_renderer.html'"></li>
+</ul>
