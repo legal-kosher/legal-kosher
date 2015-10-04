@@ -1,0 +1,23 @@
+
+<div class="row">
+  <h1 class="page-header">
+    Your Repo Analysis:
+  </h1>
+</div>
+<div id="navcontainer">
+  <ul>
+    <li ng-repeat="dependency in newData" class="dependency" ng-class="dependency.passes === true ? 'pass' : 'fail'" ng-include="'tree_item_renderer.html'"></li>
+  </ul>
+</div>
+<div>
+<div showonhoverparent></div>
+<div>
+
+
+<script type="text/ng-template"  id="tree_item_renderer.html">
+    {{dependency.name}}
+    <ul>
+        <li class="dependency" ng-class="dependency.passes === true ? 'pass' : 'fail'" ng-repeat="dependency in dependency.dependencies" ng-include="'tree_item_renderer.html'">{{dependency.name}}</li>
+        <div showonhoverparent></div>
+    </ul>
+</script>

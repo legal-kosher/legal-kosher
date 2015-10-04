@@ -4,10 +4,11 @@ angular.module( 'legal-kosher', [
   'legal-kosher.home',
   'legal-kosher.about',
   'legal-kosher.settings',
+  'legal-kosher.data',
   'ui.router'
 ])
 
-.config( function myAppConfig ( $stateProvider, $urlRouterProvider ) {
+.config( function myAppConfig ( $stateProvider, $urlRouterProvider) {
   $urlRouterProvider.otherwise( '/home' );
 })
 
