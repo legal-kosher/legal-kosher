@@ -16,25 +16,33 @@ var parseModule = function(data, req, res){
 
   // If data.licenses and a license fails the test, mark warning
   var markNodeSafety = function(data){
+    if (!data.license && !data.licenses){
+      data.license = "unknown"
+    }
+    if (data.value === undefined){
+      data.value = {
+        passes: undefined
+      };
+    }
     if (data.licenses){
       var passes = true;
       for (var i=0; i<data.licenses.length; i++){
-        if (rules[data.licenses[i]] === false){
+        if (rules[data.licenses[i].type] === false){
           passes = false;
           break;
-        } else if (!rules[data.licenses[i]] || rules[data.licenses[i]] !== true){
+        } else if (!rules[data.licenses[i].type] || rules[data.licenses[i].type] !== true){
           passes = "warn";
           break;
         }
       }
-      data.passes = passes;
+      data.value.passes = passes;
     } else if (data.license){
       if (rules[data.license] === true){
-        data.passes = true;
+        data.value.passes = true;
       } else if (!rules[data.license] || rules[data.license] !== true){
-        data.passes = "warn";
+        data.value.passes = "warn";
       } else {
-        data.passes = false;
+        data.value.passes = false;
       }
     }
   };
@@ -42,17 +50,24 @@ var parseModule = function(data, req, res){
   // Mark parent node safety status
   var markParentNode = function(parent, data){
     var currentParent = parent;
-    if (data.passes !== true){
-      while (currentParent){
-        if (data.passes === false){
-          parent.passes = false;
-        } else if (data.passes === "warn" && parent.value && parent.passes !== false){
-          parent.passes = "warn";
-        }
-        currentParent = parent.parent;
+    if (!parent.value){
+      parent.value = {
+        passes: undefined
       }
-    } else if (!parent.passes){
-      parent.passes = true;
+    }
+    if (data.value){
+      if (data.value.passes !== true){
+        while (currentParent){
+          if (data.value.passes === false){
+            parent.value.passes = false;
+          } else if (data.value.passes === "warn" && parent.value && parent.value.passes !== false){
+            parent.value.passes = "warn";
+          }
+          currentParent = parent.parent;
+        }
+      } else if (parent.value.passes === undefined){
+        parent.value.passes = true;
+      }
     }
   };
 
@@ -86,19 +101,20 @@ var parseModule = function(data, req, res){
 
   var cache = [];
   modules = JSON.stringify(modules, function(key, value) {
-      // if (typeof value === 'object' && value !== null) {
+      if (typeof value === 'object' && value !== null) {
           if (cache.indexOf(value) !== -1) {
               // Circular reference found, discard key
               return;
           }
           // Store value in our collection
           cache.push(value);
-      // }
+      }
       return value;
   });
   cache = null; // Enable garbage collection
-  console.log(modules)
-  res.send(modules);
+  // console.log(modules)
+  res.send(modules)
+  // setTimeout(function(){res.send(modules);},3000);
 
   // // grunt-bump not being marked as passing or not
   // Object.keys(modules).forEach(function(key){
