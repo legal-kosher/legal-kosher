@@ -8,34 +8,38 @@ var parseModule = require('./parse');
 // })
 
 
-var spawn = require('child_process').spawn;
-var prc = spawn('npm', ['ls', '--json', '--long']);
-var data = '';
-var includes = ["name", "version", "licenses", "license", "dependencies"];
+  var spawn = require('child_process').spawn;
+  var prc = spawn('npm', ['ls', '--json', '--long']);
+  var data = '';
+  var includes = ["name", "version", "licenses", "license", "dependencies"];
+  var modules;
+  prc.stdout.setEncoding('utf8');
+  prc.stdout.on('data', function(chunk) {
+    data += chunk;
+  });
 
-prc.stdout.setEncoding('utf8');
-prc.stdout.on('data', function(chunk) {
-  data += chunk;
-});
+  prc.stdout.on('end', function(info) {
+    var parsedObject = JSON.parse(data);
 
-prc.stdout.on('end', function(info) {
-  var parsedObject = JSON.parse(data);
+    function reduceObject(obj) {
+      _.each(obj, function(item, key, list) {
+        if (includes.indexOf(key) === -1) {
+          delete obj[key];
+        }
+      })
+      _.each(obj['dependencies'], reduceObject);
+    }
+    reduceObject(parsedObject);
+    modules = parseModule(parsedObject);
+    // fs.writeFile('./output.json', JSON.stringify(parsedObject), 'utf-8', function(err) {
+    //   if (err) console.log(err);
+    // })
+  });
 
-  function reduceObject(obj) {
-    _.each(obj, function(item, key, list) {
-      if (includes.indexOf(key) === -1) {
-        delete obj[key];
-      }
-    })
-    _.each(obj['dependencies'], reduceObject);
-  }
-  reduceObject(parsedObject);
-  parseModule(parsedObject);
-  // fs.writeFile('./output.json', JSON.stringify(parsedObject), 'utf-8', function(err) {
-  //   if (err) console.log(err);
-  // })
-});
+  prc.on('close', function(code) {
+    console.log('process exit code ' + code);
+  });
 
-prc.on('close', function(code) {
-  console.log('process exit code ' + code);
-});
+module.exports = {
+  modules: modules
+}

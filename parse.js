@@ -84,14 +84,14 @@ var parseModule = function(data){
     // console.log(util.inspect(modules, {depth: null}));
   });
 
-  // grunt-bump not being marked as passing or not
-  Object.keys(modules).forEach(function(key){
-    if (modules[key].passes === undefined){
-      // console.log(newList[key])
-      console.log(util.inspect(modules[key], {depth: null}));
-    }
-    // console.log(key, newList[key].passes)
-  });
+  return modules;
+  // // grunt-bump not being marked as passing or not
+  // Object.keys(modules).forEach(function(key){
+  //   if (modules[key].passes === undefined){
+  //     console.log(util.inspect(modules[key], {depth: null}));
+  //   }
+  //   // console.log(key, newList[key].passes)
+  // });
 
 };
 
