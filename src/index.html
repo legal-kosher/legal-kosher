@@ -15,7 +15,62 @@
     <script type="text/javascript" src="<%= file %>"></script><% }); %>
   </head>
   <body>
-    <div class="container">
+      <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-fixed-top topnav" role="navigation">
+        <div class="container topnav">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand topnav" href="#">Code Captain</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                
+        
+          <ul class="nav navbar-nav">
+            <li ui-sref-active="active">
+              <a href ui-sref="home">
+                <i class="fa fa-home"></i>
+                Home
+              </a>
+            </li>
+            <li ui-sref-active="active">
+              <a href ui-sref="about">
+                <i class="fa fa-info-circle"></i>
+                What is it?
+              </a>
+            </li>
+            <li ui-sref-active="active">
+              <a href ui-sref="settings">
+                <i class="fa fa-info-circle"></i>
+                Settings
+              </a>
+            </li>
+
+          </ul>
+        
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+
+    <div ui-view="main">
+    <!-- Header -->
+
+  
+    <!-- /.content-section-b -->
+    </div>
+
+
+      
+    <!--<div class="container">
       <div class="navbar navbar-default">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle" ng-init="menuCollapsed = true"
@@ -62,6 +117,6 @@
       <div class="container">
        <p>Made during Startup Weekend Hackathon - 2015</p>
       </div>
-    </footer>
+    </footer>-->
   </body>
 </html>
