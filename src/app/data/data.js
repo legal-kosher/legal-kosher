@@ -40,7 +40,6 @@ angular.module('legal-kosher.data', [
 //         restrict: 'EA',
 //         controller: function($scope) {
 //           $scope.showEl = {visible: false};
-
 //         },
 //         template: "<div class='span2' ng-show='showEl.visible'><span><a class='btn btn-danger' href='#'>MORE DATA GOES HERE</a></span></div>",
 //         link : function($scope, element, attrs) {
